@@ -52,11 +52,15 @@ sub linkify(@) {
     my $page_file_name = $pagesources{$params{page}};
     if ($page_file_name =~ $org_file_regexp) {
 	my $hash_adds = "";
-	my @ls = @{$links{$params{page}}};
-	foreach my $link (@ls) {
-	    my $bp = bestlink($params{page}, $link);
-	    if ($bp) {
-		$hash_adds .= qq/ (puthash "$link" "$bp" page-hash)/;
+	use Data::Dumper;
+
+	if (defined $links{$params{page}}) {
+	    my @ls = @{$links{$params{page}}};
+	    foreach my $link (@ls) {
+		my $bp = bestlink($params{page}, $link);
+		if ($bp) {
+		    $hash_adds .= qq/ (puthash "$link" "$bp" page-hash)/;
+		}
 	    }
 	}
 	my $page_hash = "(let ((page-hash (make-hash-table :test 'equal))) $hash_adds page-hash)";
